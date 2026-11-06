@@ -22,13 +22,17 @@ import {
   DialogPortal,
   DialogTitle
 } from '@/components/ui/dialog';
+import { withRouterBasename } from '@/lib/router';
 
 import { type IPdfElement } from 'client-types/';
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
+// Vite bakes this as an app-absolute `/assets/...`, which ignores
+// CHAINLIT_ROOT_PATH, so the worker has to be rebased the same way the
+// other assets are.
+pdfjs.GlobalWorkerOptions.workerSrc = withRouterBasename(workerUrl);
 
 interface PDFViewerProps {
   url: string;
